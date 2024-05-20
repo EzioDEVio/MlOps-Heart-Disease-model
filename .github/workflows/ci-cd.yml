@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
@@ -24,36 +24,60 @@ jobs:
     - name: Install dependencies
       run: |
         python -m venv mlops-env
-        .\mlops-env\Scripts\Activate.ps1
+        source mlops-env/bin/activate
         pip install --upgrade pip
         pip install -r requirements.txt
-      shell: pwsh
+      shell: bash
 
     - name: Run preprocess script
       run: |
-        .\mlops-env\Scripts\Activate.ps1
+        source mlops-env/bin/activate
         python preprocess.py
-      shell: pwsh
-
     - name: Run training script
       run: |
-        .\mlops-env\Scripts\Activate.ps1
+        source mlops-env/bin/activate
         python train.py
-      shell: pwsh
-
     - name: Start Flask app
       run: |
-        .\mlops-env\Scripts\Activate.ps1
-        Start-Process -NoNewWindow -FilePath "python" -ArgumentList "app.py"
-        Start-Sleep -Seconds 20
-      shell: pwsh
+        source mlops-env/bin/activate
+        nohup python app.py > server.log 2>&1 &
+      shell: bash
+
+    - name: Wait for the server to start
+      run: sleep 20
 
     - name: Test Flask app
       run: |
-        .\mlops-env\Scripts\Activate.ps1
-        python test_request.py
-      shell: pwsh
+        source mlops-env/bin/activate
+        curl -X POST -H "Content-Type: application/json" \
+             -d '[{"age": 63, "sex": 1, "cp": 3, "trestbps": 145, "chol": 233, "fbs": 1, "restecg": 0, "thalach": 150, "exang": 0, "oldpeak": 2.3, "slope": 3, "ca": 0, "thal": 6}]' \
+             http://localhost:5000/predict
+      shell: bash
 
-    - name: Capture server logs
-      run: Get-Content -Path server.log
-      shell: pwsh
+  docker:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v3
+      with:
+        context: .
+        file: ./Dockerfile
+        push: true
+        tags: ${{ secrets.DOCKER_USERNAME }}/mlops-heart-disease:latest
