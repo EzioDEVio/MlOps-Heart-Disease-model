@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heart Disease Prediction</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .tooltip-inner {
+            max-width: 300px;
+            /* If max-width does not work, try using width instead */
+            width: 300px; 
+        }
+        .header-logo {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+        .form-group {
+            max-width: 300px;
+            margin: auto;
+        }
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="jumbotron mt-4">
+            <div class="d-flex align-items-center">
+                <img src="{{ url_for('static', filename='heart-logo.png') }}" class="header-logo" alt="Heart Logo">
+                <h1 class="display-4">Heart Disease Prediction</h1>
+            </div>
+            <p class="lead">Fill out the form below to get a prediction on heart disease.</p>
+        </div>
+
+        {% if prediction_text %}
+        <div class="alert alert-info text-center" role="alert">
+            {{ prediction_text }}
+        </div>
+        {% endif %}
+
+        <form action="/predict" method="POST" class="text-center">
+            <div class="form-group">
+                <label for="age">Age</label>
+                <input type="number" class="form-control" id="age" name="age" placeholder="Enter age" required data-toggle="tooltip" data-placement="right" title="Enter your age in years">
+            </div>
+            <div class="form-group">
+                <label for="sex">Sex</label>
+                <select class="form-control" id="sex" name="sex" required data-toggle="tooltip" data-placement="right" title="Enter your sex (1 = male; 0 = female)">
+                    <option value="1">Male</option>
+                    <option value="0">Female</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="cp">Chest Pain Type (CP)</label>
+                <input type="number" class="form-control" id="cp" name="cp" placeholder="Enter CP" required data-toggle="tooltip" data-placement="right" title="Chest pain type (1: typical angina, 2: atypical angina, 3: non-anginal pain, 4: asymptomatic)">
+            </div>
+            <div class="form-group">
+                <label for="trestbps">Resting Blood Pressure (trestbps)</label>
+                <input type="number" class="form-control" id="trestbps" name="trestbps" placeholder="Enter resting blood pressure" required data-toggle="tooltip" data-placement="right" title="Resting blood pressure (in mm Hg on admission to the hospital)">
+            </div>
+            <div class="form-group">
+                <label for="chol">Serum Cholesterol (chol)</label>
+                <input type="number" class="form-control" id="chol" name="chol" placeholder="Enter cholesterol level" required data-toggle="tooltip" data-placement="right" title="Serum cholesterol in mg/dl">
+            </div>
+            <div class="form-group">
+                <label for="fbs">Fasting Blood Sugar (fbs)</label>
+                <select class="form-control" id="fbs" name="fbs" required data-toggle="tooltip" data-placement="right" title="Fasting blood sugar > 120 mg/dl (1 = true; 0 = false)">
+                    <option value="1">True</option>
+                    <option value="0">False</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="restecg">Resting ECG (restecg)</label>
+                <input type="number" class="form-control" id="restecg" name="restecg" placeholder="Enter resting ECG results" required data-toggle="tooltip" data-placement="right" title="Resting electrocardiographic results (0: normal, 1: having ST-T wave abnormality, 2: showing probable or definite left ventricular hypertrophy)">
+            </div>
+            <div class="form-group">
+                <label for="thalach">Maximum Heart Rate Achieved (thalach)</label>
+                <input type="number" class="form-control" id="thalach" name="thalach" placeholder="Enter maximum heart rate" required data-toggle="tooltip" data-placement="right" title="Maximum heart rate achieved">
+            </div>
+            <div class="form-group">
+                <label for="exang">Exercise Induced Angina (exang)</label>
+                <select class="form-control" id="exang" name="exang" required data-toggle="tooltip" data-placement="right" title="Exercise induced angina (1 = yes; 0 = no)">
+                    <option value="1">Yes</option>
+                    <option value="0">No</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="oldpeak">ST Depression (oldpeak)</label>
+                <input type="number" step="0.1" class="form-control" id="oldpeak" name="oldpeak" placeholder="Enter oldpeak" required data-toggle="tooltip" data-placement="right" title="ST depression induced by exercise relative to rest">
+            </div>
+            <div class="form-group">
+                <label for="slope">Slope of the Peak Exercise ST Segment (slope)</label>
+                <input type="number" class="form-control" id="slope" name="slope" placeholder="Enter slope" required data-toggle="tooltip" data-placement="right" title="The slope of the peak exercise ST segment (1: upsloping, 2: flat, 3: downsloping)">
+            </div>
+            <div class="form-group">
+                <label for="ca">Number of Major Vessels (ca)</label>
+                <input type="number" class="form-control" id="ca" name="ca" placeholder="Enter number of major vessels" required data-toggle="tooltip" data-placement="right" title="Number of major vessels (0-3) colored by fluoroscopy">
+            </div>
+            <div class="form-group">
+                <label for="thal">Thalassemia (thal)</label>
+                <input type="number" class="form-control" id="thal" name="thal" placeholder="Enter thalassemia" required data-toggle="tooltip" data-placement="right" title="Thalassemia (3 = normal; 6 = fixed defect; 7 = reversable defect)">
+            </div>
+            <button type="submit" class="btn btn-primary">Predict</button>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+    </script>
+</body>
+</html>

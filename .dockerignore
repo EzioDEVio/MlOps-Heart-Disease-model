@@ -1,30 +1,17 @@
-# Ignore Python bytecode files
+# Ignore these files to reduce the image size
+__pycache__
 *.pyc
 *.pyo
 *.pyd
-__pycache__/
-
-# Ignore virtual environment
+*.env
 venv/
-mlops-env/
-env/
-
-# Ignore dataset (optional, if it's large and you don't want to include it in the Docker image)
-data/
-
-# Ignore git files
+.ipynb_checkpoints
+.vscode/
+.idea/
+*.dockerignore
 .git
-.gitignore
-
-# Ignore MLflow artifact files
+.github
+data/
 mlruns/
 
-# Ignore VS Code settings
-.vscode/
 
-# Ignore logs
-*.log
-
-# Ignore OS generated files
-.DS_Store
-Thumbs.db

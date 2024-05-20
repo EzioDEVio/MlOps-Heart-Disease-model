@@ -1,52 +1,54 @@
-
 name: MLOps CI/CD Pipeline
 
 on:
   push:
     branches:
-      - main
+      - master
   pull_request:
     branches:
-      - main
+      - master
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.8'
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
 
-      - name: Install dependencies
-        run: |
-          python -m venv venv
-          source venv/bin/activate
-          pip install -r requirements.txt
+    - name: Install dependencies
+      run: |
+        python -m venv mlops-env
+        source mlops-env/bin/activate
+        pip install -r requirements.txt
 
-      - name: Run preprocessing
-        run: |
-          source venv/bin/activate
-          python preprocess.py
+    - name: Run preprocess script
+      run: |
+        source mlops-env/bin/activate
+        python preprocess.py
 
-      - name: Train model
-        run: |
-          source venv/bin/activate
-          python train.py
+    - name: Run training script
+      run: |
+        source mlops-env/bin/activate
+        python train.py
 
-      - name: Build Docker image
-        run: |
-          docker build -t mlops-heart-disease .
+    - name: Start Flask app
+      run: |
+        source mlops-env/bin/activate
+        nohup python app.py &
+      shell: bash
 
-      - name: Run Docker container
-        run: |
-          docker run -d -p 5000:5000 mlops-heart-disease
+    - name: Wait for the server to start
+      run: sleep 20
 
-      - name: Test the model
-        run: |
-          sleep 10  # Wait for the server to start
-          curl -X POST -H "Content-Type: application/json" -d '[{"age": 63, "sex": 1, "cp": 3, "trestbps": 145, "chol": 233, "fbs": 1, "restecg": 0, "thalach": 150, "exang": 0, "oldpeak": 2.3, "slope": 3, "ca": 0, "thal": 6}]' http://localhost:5000/predict
+    - name: Test Flask app
+      run: |
+        source mlops-env/bin/activate
+        curl -X POST -H "Content-Type: application/json" \
+             -d '[{"age": 63, "sex": 1, "cp": 3, "trestbps": 145, "chol": 233, "fbs": 1, "restecg": 0, "thalach": 150, "exang": 0, "oldpeak": 2.3, "slope": 3, "ca": 0, "thal": 6}]' \
+             http://localhost:5000/predict

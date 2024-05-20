@@ -4,6 +4,8 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 import mlflow
 import mlflow.sklearn
+import os
+import shutil
 
 def load_data():
     X_train = pd.read_csv('data/X_train.csv')
@@ -31,6 +33,14 @@ if __name__ == "__main__":
 
     mlflow.log_param("n_estimators", 100)
     mlflow.log_metric("accuracy", accuracy)
-    mlflow.sklearn.log_model(model, "model")
+    
+    # Ensure the model directory exists and is empty
+    model_path = "model"
+    if os.path.exists(model_path):
+        shutil.rmtree(model_path)
+    os.makedirs(model_path)
+    
+    # Save the model to the 'model' directory
+    mlflow.sklearn.save_model(model, model_path)
 
     mlflow.end_run()
