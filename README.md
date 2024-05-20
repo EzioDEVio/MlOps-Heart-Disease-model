@@ -1,10 +1,11 @@
 
-[![MLOps CI/CD Pipeline](https://github.com/EzioDEVio/MlOps-Heart-Disease-model/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/EzioDEVio/MlOps-Heart-Disease-model/actions/workflows/ci-cd.yml) 
 
+
+[![MLOps CI/CD Pipeline](https://github.com/EzioDEVio/MlOps-Heart-Disease-model/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/EzioDEVio/MlOps-Heart-Disease-model/actions/workflows/ci-cd.yml) 
 
 # Heart Disease Prediction Project
 
-This project is a web application that predicts whether a patient has heart disease based on various medical attributes. The application uses a machine learning model trained on the Cleveland Heart Disease dataset from the UCI Machine Learning Repository. You can browse other datasets from Kaggle which is opensource for all machine learning models.
+This project is a web application that predicts whether a patient has heart disease based on various medical attributes. The application uses a machine learning model trained on the Cleveland Heart Disease dataset from the UCI Machine Learning Repository. This project showcases the concept of MLOps using a CI/CD pipeline, from gathering data, splitting the data, training the model, to building and deploying an application that provides predictions.
 
 ## Table of Contents
 - [Project Overview](#project-overview)
@@ -42,24 +43,23 @@ The dataset used in this project is the Cleveland Heart Disease dataset from the
 ## Project Structure
 The project structure is as follows:
 
+```
 MlOps_Heart_Disease/
-│
-├── app.py # Flask application
-├── preprocess.py # Data preprocessing script
-├── train.py # Model training script
-├── test_model.py # Script to test the model
-├── test_app.py # Script to test the Flask app
+├── app.py                  # Flask application
+├── preprocess.py           # Data preprocessing script
+├── train.py                # Model training script
+├── test_model.py           # Script to test the model
+├── test_app.py             # Script to test the Flask app
 ├── templates/
-│ └── index.html # HTML template for the web interface
+│   └── index.html          # HTML template for the web interface
 ├── static/
-│ └── heart-logo.png # Logo image
-├── model/ # Directory where the trained model is saved
-├── data/ # Directory for the dataset
-│ └── heart.csv # Heart disease dataset
-├── requirements.txt # Python dependencies
-└── README.md # Project documentation
-
-
+│   └── heart-logo.png      # Logo image
+├── model/                  # Directory where the trained model is saved
+├── data/                   # Directory for the dataset
+│   └── heart.csv           # Heart disease dataset
+├── requirements.txt        # Python dependencies
+└── README.md               # Project documentation
+```
 
 ## Getting Started
 
@@ -71,7 +71,7 @@ MlOps_Heart_Disease/
 ### Installation
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/MlOps_Heart_Disease.git
+    git clone https://github.com/EzioDEVio/MlOps-Heart-Disease-model.git
     cd MlOps_Heart_Disease
     ```
 
@@ -83,10 +83,11 @@ MlOps_Heart_Disease/
 
 3. Install the required packages:
     ```bash
+    pip install --upgrade pip
     pip install -r requirements.txt
     ```
 
-### Data Preprocessing
+## Data Preprocessing
 1. Download the dataset from [Kaggle](https://www.kaggle.com/):
     - Sign in to Kaggle and download the Cleveland Heart Disease dataset.
     - Place the downloaded `heart.csv` file in the `data/` directory.
@@ -96,15 +97,25 @@ MlOps_Heart_Disease/
     python preprocess.py
     ```
 
-### Model Training
+This script will:
+- Load the dataset
+- Clean the data (replace missing values)
+- Split the data into training and testing sets
+- Save the preprocessed data in the `data/` directory
+
+## Model Training
 1. Train the model using the preprocessed data:
     ```bash
     python train.py
     ```
 
-    This script will train a Random Forest classifier and save the model in the `model/` directory.
+This script will:
+- Load the preprocessed data
+- Train a Random Forest classifier
+- Evaluate the model and log the accuracy
+- Save the trained model in the `model/` directory
 
-### Running the Flask App
+## Running the Flask App
 1. Start the Flask application:
     ```bash
     python app.py
@@ -112,7 +123,7 @@ MlOps_Heart_Disease/
 
 2. Open your web browser and navigate to `http://127.0.0.1:5000`.
 
-### Usage
+## Usage
 - Fill out the form on the web interface with the required medical attributes.
 - Click the "Predict" button to get the prediction result.
 - The prediction result will indicate whether the patient has heart disease or not.
@@ -122,5 +133,40 @@ Contributions are welcome! Please open an issue or submit a pull request if you 
 
 ## License
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+```
 
+### Explanation of Components and Commands
+
+1. **Data Preprocessing (`preprocess.py`)**:
+    - **Purpose**: Clean and split the dataset into training and testing sets.
+    - **Commands**:
+        ```bash
+        python preprocess.py
+        ```
+    - **Code**: The script loads the dataset, handles missing values, converts data types, splits the data, and saves the preprocessed data.
+
+2. **Model Training (`train.py`)**:
+    - **Purpose**: Train a machine learning model using the preprocessed data.
+    - **Commands**:
+        ```bash
+        python train.py
+        ```
+    - **Code**: The script loads the preprocessed data, trains a Random Forest classifier, evaluates the model, logs the accuracy, and saves the trained model.
+
+3. **Flask Application (`app.py`)**:
+    - **Purpose**: Serve a web interface to input medical attributes and get heart disease predictions.
+    - **Commands**:
+        ```bash
+        python app.py
+        ```
+    - **Code**: The script sets up the Flask application, loads the trained model, defines routes for the home page and prediction endpoint, and handles form submissions to provide predictions.
+
+4. **Testing (`test_model.py` and `test_app.py`)**:
+    - **Purpose**: Test the trained model and the Flask application to ensure they work correctly.
+    - **Commands**:
+        ```bash
+        python test_model.py
+        python test_app.py
+        ```
+    - **Code**: These scripts send test data to the model and the Flask application to verify their functionality.
 
