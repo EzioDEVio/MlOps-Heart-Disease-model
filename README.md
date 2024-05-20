@@ -115,26 +115,6 @@ This script will:
 - Evaluate the model and log the accuracy
 - Save the trained model in the `model/` directory
 
-## Running the Flask App
-1. Start the Flask application:
-    ```bash
-    python app.py
-    ```
-
-2. Open your web browser and navigate to `http://127.0.0.1:5000`.
-
-## Usage
-- Fill out the form on the web interface with the required medical attributes.
-- Click the "Predict" button to get the prediction result.
-- The prediction result will indicate whether the patient has heart disease or not.
-
-## Contributing
-Contributions are welcome! Please open an issue or submit a pull request if you have any improvements or new features to add.
-
-## License
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-```
-
 ### Explanation of Components and Commands
 
 1. **Data Preprocessing (`preprocess.py`)**:
@@ -169,4 +149,26 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
         python test_app.py
         ```
     - **Code**: These scripts send test data to the model and the Flask application to verify their functionality.
+
+
+
+## Running the Flask App
+1. Start the Flask application:
+    ```bash
+    python app.py
+    ```
+
+2. Open your web browser and navigate to `http://127.0.0.1:5000`.
+
+## Usage
+- Fill out the form on the web interface with the required medical attributes.
+- Click the "Predict" button to get the prediction result.
+- The prediction result will indicate whether the patient has heart disease or not.
+
+## Contributing
+Contributions are welcome! Please open an issue or submit a pull request if you have any improvements or new features to add.
+
+## License
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
 
