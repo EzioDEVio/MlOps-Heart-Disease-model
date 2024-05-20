@@ -24,34 +24,36 @@ jobs:
     - name: Install dependencies
       run: |
         python -m venv mlops-env
-        .\mlops-env\Scripts\activate
+        .\mlops-env\Scripts\Activate.ps1
         pip install --upgrade pip
         pip install -r requirements.txt
-      shell: bash
+      shell: pwsh
 
     - name: Run preprocess script
       run: |
-        .\mlops-env\Scripts\activate
+        .\mlops-env\Scripts\Activate.ps1
         python preprocess.py
+      shell: pwsh
 
     - name: Run training script
       run: |
-        .\mlops-env\Scripts\activate
+        .\mlops-env\Scripts\Activate.ps1
         python train.py
+      shell: pwsh
 
     - name: Start Flask app
       run: |
-        .\mlops-env\Scripts\activate
-        python app.py > server.log 2>&1 &
-      shell: bash
-
-    - name: Wait for the server to start
-      run: Start-Sleep -Seconds 20
+        .\mlops-env\Scripts\Activate.ps1
+        Start-Process -NoNewWindow -FilePath "python" -ArgumentList "app.py"
+        Start-Sleep -Seconds 20
+      shell: pwsh
 
     - name: Test Flask app
       run: |
-        .\mlops-env\Scripts\activate
+        .\mlops-env\Scripts\Activate.ps1
         python test_request.py
+      shell: pwsh
 
     - name: Capture server logs
       run: Get-Content -Path server.log
+      shell: pwsh
