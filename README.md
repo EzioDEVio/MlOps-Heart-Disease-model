@@ -124,18 +124,3 @@ Contributions are welcome! Please open an issue or submit a pull request if you 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 
-Explanation of Each Value in the Model
-Age: The age of the patient in years.
-Sex: The gender of the patient (1 = male, 0 = female).
-Chest Pain Type (CP): Indicates the type of chest pain experienced by the patient (1: typical angina, 2: atypical angina, 3: non-anginal pain, 4: asymptomatic).
-Resting Blood Pressure (trestbps): The patient's resting blood pressure in mm Hg.
-Serum Cholesterol (chol): The patient's serum cholesterol level in mg/dl.
-Fasting Blood Sugar (fbs): Indicates if the patient's fasting blood sugar is greater than 120 mg/dl (1 = true, 0 = false).
-Resting ECG (restecg): Results of the patient's resting electrocardiographic test (0: normal, 1: having ST-T wave abnormality, 2: showing probable or definite left ventricular hypertrophy).
-Maximum Heart Rate Achieved (thalach): The maximum heart rate achieved by the patient.
-Exercise Induced Angina (exang): Indicates if the patient experiences angina induced by exercise (1 = yes, 0 = no).
-ST Depression (oldpeak): The amount of ST depression induced by exercise relative to rest.
-Slope of the Peak Exercise ST Segment (slope): The slope of the peak exercise ST segment (1: upsloping, 2: flat, 3: downsloping).
-Number of Major Vessels (ca): The number of major vessels (0-3) colored by fluoroscopy.
-Thalassemia (thal): Indicates the presence of thalassemia (3 = normal, 6 = fixed defect, 7 = reversable defect).
-The model uses these features to predict whether a patient has heart disease (target = 1) or not (target = 0).
