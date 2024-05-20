@@ -1,6 +1,10 @@
+
+[![MLOps CI/CD Pipeline](https://github.com/EzioDEVio/MlOps-Heart-Disease-model/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/EzioDEVio/MlOps-Heart-Disease-model/actions/workflows/ci-cd.yml) 
+
+
 # Heart Disease Prediction Project
 
-This project is a web application that predicts whether a patient has heart disease based on various medical attributes. The application uses a machine learning model trained on the Cleveland Heart Disease dataset from the UCI Machine Learning Repository.
+This project is a web application that predicts whether a patient has heart disease based on various medical attributes. The application uses a machine learning model trained on the Cleveland Heart Disease dataset from the UCI Machine Learning Repository. You can browse other datasets from Kaggle which is opensource for all machine learning models.
 
 ## Table of Contents
 - [Project Overview](#project-overview)
