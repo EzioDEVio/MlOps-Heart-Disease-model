@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - name: Checkout code
@@ -24,34 +24,34 @@ jobs:
     - name: Install dependencies
       run: |
         python -m venv mlops-env
-        source mlops-env/bin/activate
+        .\mlops-env\Scripts\activate
         pip install --upgrade pip
         pip install -r requirements.txt
       shell: bash
 
     - name: Run preprocess script
       run: |
-        source mlops-env/bin/activate
+        .\mlops-env\Scripts\activate
         python preprocess.py
 
     - name: Run training script
       run: |
-        source mlops-env/bin/activate
+        .\mlops-env\Scripts\activate
         python train.py
 
     - name: Start Flask app
       run: |
-        source mlops-env/bin/activate
-        nohup python app.py > server.log 2>&1 &
+        .\mlops-env\Scripts\activate
+        python app.py > server.log 2>&1 &
       shell: bash
 
     - name: Wait for the server to start
-      run: sleep 20
+      run: Start-Sleep -Seconds 20
 
     - name: Test Flask app
       run: |
-        source mlops-env/bin/activate
-        curl -X POST -H "Content-Type: application/json" \
-             -d '[{"age": 63, "sex": 1, "cp": 3, "trestbps": 145, "chol": 233, "fbs": 1, "restecg": 0, "thalach": 150, "exang": 0, "oldpeak": 2.3, "slope": 3, "ca": 0, "thal": 6}]' \
-             http://localhost:5000/predict
-      shell: bash
+        .\mlops-env\Scripts\activate
+        python test_request.py
+
+    - name: Capture server logs
+      run: Get-Content -Path server.log
